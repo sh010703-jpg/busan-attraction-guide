@@ -56,7 +56,16 @@ export default function Home() {
       return matchKeyword && matchGugun;
     });
   }, [spots, keyword, selectedGugun]);
+  
+function recommendRandomSpot() {
+  if (filteredSpots.length === 0) {
+    alert("추천할 명소가 없습니다. 검색어나 구·군 선택을 다시 확인해주세요.");
+    return;
+  }
 
+  const randomIndex = Math.floor(Math.random() * filteredSpots.length);
+  setSelectedSpot(filteredSpots[randomIndex]);
+}
   return (
     <main>
       <section className="hero">
@@ -93,6 +102,19 @@ export default function Home() {
         </p>
       </section>
 
+<section className="resultInfo">
+  <p>
+    총 <strong>{filteredSpots.length}</strong>개의 명소가 검색되었습니다.
+  </p>
+
+  <button
+    type="button"
+    className="recommendButton"
+    onClick={recommendRandomSpot}
+  >
+    오늘의 부산명소 추천받기
+  </button>
+</section>
       {loading && <p className="status">부산명소 데이터를 불러오는 중입니다...</p>}
 
       {error && <p className="error">오류: {error}</p>}
