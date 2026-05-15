@@ -7,6 +7,7 @@ export default function Home() {
   const [spots, setSpots] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [selectedGugun, setSelectedGugun] = useState("전체");
+  const [selectedSpot, setSelectedSpot] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -99,15 +100,23 @@ export default function Home() {
       {!loading && !error && (
         <section className="grid">
           {filteredSpots.map((spot) => (
-            <SpotCard key={spot.UC_SEQ} spot={spot} />
+            <SpotCard
+              key={spot.UC_SEQ}
+              spot={spot}
+              onSelect={() => setSelectedSpot(spot)}
+            />
           ))}
         </section>
+      )}
+
+      {selectedSpot && (
+        <SpotModal spot={selectedSpot} onClose={() => setSelectedSpot(null)} />
       )}
     </main>
   );
 }
 
-function SpotCard({ spot }) {
+function SpotCard({ spot, onSelect }) {
   const imageUrl = getImageUrl(spot.MAIN_IMG_THUMB || spot.MAIN_IMG_NORMAL);
   const mapUrl = getMapUrl(spot);
 
@@ -141,35 +150,128 @@ function SpotCard({ spot }) {
           </p>
         )}
 
-        {spot.USAGE_DAY_WEEK_AND_TIME && (
-          <p className="info">
-            <strong>운영시간</strong> {spot.USAGE_DAY_WEEK_AND_TIME}
-          </p>
-        )}
-
         {spot.ITEMCNTNTS && (
           <p className="description">{stripHtml(spot.ITEMCNTNTS)}</p>
         )}
 
         <div className="buttons">
+          <button type="button" onClick={onSelect}>
+            상세보기
+          </button>
+
           {mapUrl && (
             <a href={mapUrl} target="_blank" rel="noopener noreferrer">
               지도 보기
             </a>
           )}
-
-          {spot.HOMEPAGE_URL && (
-            <a
-              href={spot.HOMEPAGE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              홈페이지
-            </a>
-          )}
         </div>
       </div>
     </article>
+  );
+}
+
+function SpotModal({ spot, onClose }) {
+  const imageUrl = getImageUrl(spot.MAIN_IMG_NORMAL || spot.MAIN_IMG_THUMB);
+  const mapUrl = getMapUrl(spot);
+
+  return (
+    <div className="modalOverlay" onClick={onClose}>
+      <section className="modal" onClick={(e) => e.stopPropagation()}>
+        <button className="closeButton" type="button" onClick={onClose}>
+          닫기
+        </button>
+
+        {imageUrl && (
+          <div className="modalImage">
+            <img src={imageUrl} alt={spot.MAIN_TITLE || "부산명소 이미지"} />
+          </div>
+        )}
+
+        <div className="modalBody">
+          <span className="gugun">{spot.GUGUN_NM || "부산"}</span>
+          <h2>{spot.MAIN_TITLE || spot.PLACE || "부산명소"}</h2>
+
+          {spot.TITLE && <p className="modalTitle">{spot.TITLE}</p>}
+          {spot.SUBTITLE && <p className="subtitle">{spot.SUBTITLE}</p>}
+
+          <div className="detailList">
+            {spot.ADDR1 && (
+              <p>
+                <strong>주소</strong>
+                <span>{spot.ADDR1}</span>
+              </p>
+            )}
+
+            {spot.CNTCT_TEL && (
+              <p>
+                <strong>연락처</strong>
+                <span>{spot.CNTCT_TEL}</span>
+              </p>
+            )}
+
+            {spot.USAGE_DAY && (
+              <p>
+                <strong>운영일</strong>
+                <span>{spot.USAGE_DAY}</span>
+              </p>
+            )}
+
+            {spot.HLDY_INFO && (
+              <p>
+                <strong>휴무일</strong>
+                <span>{spot.HLDY_INFO}</span>
+              </p>
+            )}
+
+            {spot.USAGE_DAY_WEEK_AND_TIME && (
+              <p>
+                <strong>운영시간</strong>
+                <span>{spot.USAGE_DAY_WEEK_AND_TIME}</span>
+              </p>
+            )}
+
+            {spot.USAGE_AMOUNT && (
+              <p>
+                <strong>이용요금</strong>
+                <span>{spot.USAGE_AMOUNT}</span>
+              </p>
+            )}
+
+            {spot.TRFC_INFO && (
+              <p>
+                <strong>교통정보</strong>
+                <span>{spot.TRFC_INFO}</span>
+              </p>
+            )}
+          </div>
+
+          {spot.ITEMCNTNTS && (
+            <div className="contentsBox">
+              <h3>상세 소개</h3>
+              <p>{stripHtml(spot.ITEMCNTNTS)}</p>
+            </div>
+          )}
+
+          <div className="buttons modalButtons">
+            {mapUrl && (
+              <a href={mapUrl} target="_blank" rel="noopener noreferrer">
+                지도에서 보기
+              </a>
+            )}
+
+            {spot.HOMEPAGE_URL && (
+              <a
+                href={spot.HOMEPAGE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                홈페이지 이동
+              </a>
+            )}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
 
