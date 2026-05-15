@@ -235,3 +235,144 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+.buttons button {
+  border: none;
+  cursor: pointer;
+  padding: 10px 13px;
+  border-radius: 12px;
+  background: #111827;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 100;
+}
+
+.modal {
+  width: min(860px, 96vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 26px;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.35);
+}
+
+.closeButton {
+  position: sticky;
+  top: 14px;
+  float: right;
+  margin: 14px 14px 0 0;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 13px;
+  background: #111827;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.modalImage {
+  height: 320px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.modalImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalBody {
+  padding: 28px;
+}
+
+.modalBody h2 {
+  font-size: 30px;
+  margin-top: 8px;
+}
+
+.modalTitle {
+  color: #111827;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.detailList {
+  margin-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detailList p {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  margin: 0;
+  border-bottom: 1px solid #e5e7eb;
+  line-height: 1.6;
+}
+
+.detailList strong {
+  color: #111827;
+}
+
+.detailList span {
+  color: #374151;
+}
+
+.contentsBox {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.contentsBox h3 {
+  margin: 0 0 10px;
+}
+
+.contentsBox p {
+  margin: 0;
+  line-height: 1.8;
+  color: #374151;
+}
+
+.modalButtons {
+  margin-top: 24px;
+}
+
+@media (max-width: 640px) {
+  .modalOverlay {
+    padding: 12px;
+  }
+
+  .modalImage {
+    height: 220px;
+  }
+
+  .modalBody {
+    padding: 22px;
+  }
+
+  .modalBody h2 {
+    font-size: 25px;
+  }
+
+  .detailList p {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
